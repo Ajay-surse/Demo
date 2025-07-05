@@ -48,7 +48,9 @@ router.post("/scan-and-pr", async (req, res) => {
       const original = fs.readFileSync(filePath, "utf8");
 
       // Simulate AI fix — integrate Gemini or Deepseek here
-      const fixed = original.replace(/let /g, "let "); // e.g., dumb fix
+      //const fixed = original.replace(/let /g, "let "); // e.g., dumb fix
+      const fixed = original + "\n// AI reviewed\n";
+
 
       if (original !== fixed) {
         fs.writeFileSync(filePath, fixed, "utf8");
@@ -78,3 +80,4 @@ router.post("/scan-and-pr", async (req, res) => {
 });
 
 export default router; // Change
+// AI reviewed

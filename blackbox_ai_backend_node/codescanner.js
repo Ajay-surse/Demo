@@ -50,6 +50,7 @@ router.post("/scan-and-pr", async (req, res) => {
       // Simulate AI fix — integrate Gemini or Deepseek here
       //const fixed = original.replace(/let /g, "let "); // e.g., dumb fix
       const fixed = original + "\n// AI reviewed\n";
+      // In a real scenario, you would call your AI service here to get the fixed code
 
 
       if (original !== fixed) {
@@ -80,4 +81,6 @@ router.post("/scan-and-pr", async (req, res) => {
 });
 
 export default router; // Change
+// AI reviewed
+
 // AI reviewed

@@ -1,17 +1,16 @@
-import express from "express"; // Change
-import fs from "fs"; // Change
-import path from "path"; // Change
-import simpleGit from "simple-git"; // Change
-import { Octokit } from "@octokit/rest"; // Change
-import 'dotenv/config'; // Change: Load dotenv early and correctly for ES Modules
-import { fileURLToPath } from 'url'; // Added for __dirname equivalent
+import express from "express";
+import fs from "fs";
+import path from "path";
+import simpleGit from "simple-git";
+import { Octokit } from "@octokit/rest";
+import 'dotenv/config';
+import { fileURLToPath } from 'url';
 
-// Added for __dirname equivalent in ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const router = express.Router();
-const git = simpleGit(); // simpleGit() usually works fine without arguments if in a Git repo root
+const git = simpleGit();
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
 const repo = process.env.GITHUB_REPO;
@@ -35,11 +34,6 @@ function getAllCodeFiles(dir, fileList = []) {
 // POST /api/scan-and-pr
 router.post("/scan-and-pr", async (req, res) => {
   try {
-    // Before running, ensure this is a Git repository and you're in the right directory.
-    // Also, ensure the 'your-project-folder' path is correct relative to where you run the server.
-    //const projectFolderToScan = path.join(__dirname, '..', 'your-project-folder'); // Adjust this path as needed
-    //const projectFolderToScan = "C:\Users\HP\Desktop\FinalProject\pullrequest\Pull-request\blackbox_ai_backend_node";
-
     const branchName = `ai/code-scan-${Date.now()}`;
     await git.checkoutLocalBranch(branchName);
 
@@ -48,9 +42,8 @@ router.post("/scan-and-pr", async (req, res) => {
       const original = fs.readFileSync(filePath, "utf8");
 
       // Simulate AI fix — integrate Gemini or Deepseek here
-      //const fixed = original.replace(/let /g, "let "); // e.g., dumb fix
-      const fixed = original + "\n// AI reviewed\n";
-
+      const fixed = original + "\n";
+      // In a real scenario, you would call your AI service here to get the fixed code
 
       if (original !== fixed) {
         fs.writeFileSync(filePath, fixed, "utf8");
@@ -79,5 +72,6 @@ router.post("/scan-and-pr", async (req, res) => {
   }
 });
 
-export default router; // Change
-// AI reviewed
+export default router;
+
+
